@@ -1,0 +1,10 @@
+C:\Users\crist\eclipse-workspace\algafood-api\src\main\java\com\algaworks\algafood\domain\model\Restaurante.java
+C:\Users\crist\eclipse-workspace\algafood-api\src\main\java\com\algaworks\algafood\domain\model\Cozinha.java
+C:\Users\crist\eclipse-workspace\algafood-api\src\main\java\com\algaworks\algafood\jpa\BuscaCozinhaMain.java
+C:\Users\crist\eclipse-workspace\algafood-api\src\main\java\com\algaworks\algafood\infrastructure\repository\CozinhaRepositoryImpl.java
+C:\Users\crist\eclipse-workspace\algafood-api\src\main\java\com\algaworks\algafood\AlgafoodApiApplication.java
+C:\Users\crist\eclipse-workspace\algafood-api\src\main\java\com\algaworks\algafood\jpa\ConsultaCozinhaMain.java
+C:\Users\crist\eclipse-workspace\algafood-api\src\main\java\com\algaworks\algafood\jpa\InclusaoCozinhaMain.java
+C:\Users\crist\eclipse-workspace\algafood-api\src\main\java\com\algaworks\algafood\jpa\AtualizarCozinhaMain.java
+C:\Users\crist\eclipse-workspace\algafood-api\src\main\java\com\algaworks\algafood\jpa\RemoverCozinhaMain.java
+C:\Users\crist\eclipse-workspace\algafood-api\src\main\java\com\algaworks\algafood\domain\repository\CozinhaRepository.java
