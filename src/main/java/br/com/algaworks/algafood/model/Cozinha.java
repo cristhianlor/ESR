@@ -19,13 +19,14 @@ public class Cozinha {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name = "nome_cozinha", nullable = false, length = 70)
+	@Column(name = "cozinha", nullable = false, length = 70)
 	private String nome;
 	@OneToMany(mappedBy = "cozinha", cascade = CascadeType.ALL)
 	private List<Restaurante> restaurantes = new ArrayList<>();
 
-	public Cozinha(String nome) {
+	public Cozinha(String nome, List<Restaurante> restaurantes) {
 		this.nome = nome;
+		this.restaurantes = restaurantes;
 	}
 
 	public Integer getId() {
@@ -34,6 +35,10 @@ public class Cozinha {
 
 	public String getNome() {
 		return nome;
+	}
+
+	public List<Restaurante> getRestaurantes() {
+		return restaurantes;
 	}
 
 	@Override
