@@ -1,9 +1,5 @@
 package br.com.algaworks.algafood.model;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,33 +7,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
-@Table(name = "tb_restaurante")
-public class Restaurante {
+@Table(name = "tb_cidade")
+public class Cidade {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name = "nm_restaurante", nullable = false, length = 70)
+	@Column(name = "nm_cidade", nullable = false, length = 60)
 	private String nome;
-	@Column(name = "tx_frete")
-	private BigDecimal taxaFrete = BigDecimal.ZERO;
 	@ManyToOne
-	@JoinColumn(name = "cozinha_id", nullable = false)
-	private Cozinha cozinha;
-	@JsonIgnore
-	@OneToMany(mappedBy = "restaurante")
-	private List<Produto> produtos = new ArrayList<>();
+	@JoinColumn(name = "estado_id", nullable = false)
+	private Estado estado;
 
-	public Restaurante(String nome, BigDecimal taxaFrete, Cozinha cozinha) {
+	public Cidade(String nome) {
 		this.nome = nome;
-		this.taxaFrete = taxaFrete;
-		this.cozinha = cozinha;
 	}
 
 	public Integer getId() {
@@ -48,12 +34,8 @@ public class Restaurante {
 		return nome;
 	}
 
-	public BigDecimal getTaxaFrete() {
-		return taxaFrete;
-	}
-
-	public Cozinha getCozinha() {
-		return cozinha;
+	public Estado getEstado() {
+		return estado;
 	}
 
 	@Override
@@ -72,7 +54,7 @@ public class Restaurante {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Restaurante other = (Restaurante) obj;
+		Cidade other = (Cidade) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
