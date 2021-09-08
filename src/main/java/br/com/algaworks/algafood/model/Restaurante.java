@@ -34,6 +34,9 @@ public class Restaurante {
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos = new ArrayList<>();
 
+	public Restaurante() {
+	}
+
 	public Restaurante(String nome, BigDecimal taxaFrete, Cozinha cozinha) {
 		this.nome = nome;
 		this.taxaFrete = taxaFrete;

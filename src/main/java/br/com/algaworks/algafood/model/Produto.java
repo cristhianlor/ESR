@@ -30,13 +30,16 @@ public class Produto {
 	@JoinColumn(name = "restaurante_id", nullable = false)
 	private Restaurante restaurante;
 
+	public Produto() {
+	}
+
 	public Produto(String nome, String descricao, BigDecimal preco, boolean ativo) {
 		this.nome = nome;
 		this.descricao = descricao;
 		this.preco = preco;
 		this.ativo = ativo;
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}

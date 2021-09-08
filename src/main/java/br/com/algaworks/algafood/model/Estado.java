@@ -17,6 +17,9 @@ public class Estado {
 	@Column(name = "nm_estado", nullable = false, length = 30)
 	private String nome;
 
+	public Estado() {
+	}
+
 	public Estado(String nome) {
 		this.nome = nome;
 	}

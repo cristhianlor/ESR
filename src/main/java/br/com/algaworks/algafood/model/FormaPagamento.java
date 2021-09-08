@@ -17,6 +17,9 @@ public class FormaPagamento {
 	@Column(name = "desc_fm_pagto", nullable = false, length = 70)
 	private String descricao;
 
+	public FormaPagamento() {
+	}
+
 	public FormaPagamento(String descricao) {
 		this.descricao = descricao;
 	}

@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_cozinha")
 public class Cozinha {
@@ -21,8 +23,13 @@ public class Cozinha {
 	private Integer id;
 	@Column(name = "cozinha", nullable = false, length = 70)
 	private String nome;
+	@JsonIgnore
 	@OneToMany(mappedBy = "cozinha", cascade = CascadeType.ALL)
 	private List<Restaurante> restaurantes = new ArrayList<>();
+	
+	
+	public Cozinha() {
+	}
 
 	public Cozinha(String nome, List<Restaurante> restaurantes) {
 		this.nome = nome;

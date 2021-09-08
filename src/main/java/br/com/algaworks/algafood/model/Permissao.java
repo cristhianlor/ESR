@@ -18,6 +18,9 @@ public class Permissao {
 	@Column(name = "desc_permissao", nullable = false, length = 30)
 	private String descricao;
 
+	public Permissao() {
+	}
+
 	public Integer getId() {
 		return id;
 	}
