@@ -3,7 +3,6 @@ package br.com.algaworks.algafood.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +23,7 @@ public class Cozinha {
 	@Column(name = "cozinha", nullable = false, length = 70)
 	private String nome;
 	@JsonIgnore
-	@OneToMany(mappedBy = "cozinha", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "cozinha")
 	private List<Restaurante> restaurantes = new ArrayList<>();
 	
 	
