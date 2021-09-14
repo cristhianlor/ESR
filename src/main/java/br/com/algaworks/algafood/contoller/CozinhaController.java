@@ -1,10 +1,8 @@
 package br.com.algaworks.algafood.contoller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.algaworks.algafood.exception.EntidadeEmUsoException;
+import br.com.algaworks.algafood.exception.EntidadeNaoEncontradaException;
 import br.com.algaworks.algafood.model.Cozinha;
 import br.com.algaworks.algafood.repository.CozinhaRepository;
 import br.com.algaworks.algafood.service.CozinhaService;
@@ -47,21 +47,34 @@ public class CozinhaController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Cozinha> excluir(@PathVariable Integer id) {
 
+		/*
+		 * try {
+		 * 
+		 * Optional<Cozinha> cozinha = cozinhaRepository.findById(id);
+		 * 
+		 * if (cozinha.isPresent()) {
+		 * 
+		 * cozinhaRepository.deleteById(id);
+		 * 
+		 * return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); }
+		 * 
+		 * return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		 * 
+		 * } catch (EntidadeEmUsoException e) { return
+		 * ResponseEntity.status(HttpStatus.CONFLICT).build(); }
+		 */
+
 		try {
+			cozinhaService.deletar(id);
 
-			Optional<Cozinha> cozinha = cozinhaRepository.findById(id);
+			return ResponseEntity.noContent().build();
 
-			if (cozinha.isPresent()) {
-
-				cozinhaRepository.deleteById(id);
-
-				return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-			}
-
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-
-		} catch (DataIntegrityViolationException e) {
+		} catch (EntidadeEmUsoException e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+
+		} catch (EntidadeNaoEncontradaException e) {
+			return ResponseEntity.notFound().build();
 		}
+
 	}
 }
