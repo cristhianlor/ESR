@@ -2,6 +2,8 @@ package br.com.algaworks.algafood.contoller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.algaworks.algafood.exception.EntidadeEmUsoException;
-import br.com.algaworks.algafood.exception.EntidadeNaoEncontradaException;
 import br.com.algaworks.algafood.model.Cozinha;
 import br.com.algaworks.algafood.repository.CozinhaRepository;
 import br.com.algaworks.algafood.service.CozinhaService;
@@ -30,7 +30,7 @@ public class CozinhaController {
 	private CozinhaService cozinhaService;
 
 	@PostMapping
-	public ResponseEntity<Cozinha> salvar(@RequestBody Cozinha cozinha) {
+	public ResponseEntity<Cozinha> salvar(@RequestBody @Valid Cozinha cozinha) {
 
 		// Cozinha cz = cozinhaRepository.save(cozinha);
 
@@ -64,17 +64,9 @@ public class CozinhaController {
 		 * ResponseEntity.status(HttpStatus.CONFLICT).build(); }
 		 */
 
-		try {
-			cozinhaService.deletar(id);
+		cozinhaService.deletar(id);
 
-			return ResponseEntity.noContent().build();
-
-		} catch (EntidadeEmUsoException e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
-
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.noContent().build();
 
 	}
 }
