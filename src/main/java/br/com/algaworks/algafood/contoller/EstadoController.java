@@ -20,8 +20,6 @@ import br.com.algaworks.algafood.service.EstadoService;
 @RequestMapping("/estado")
 public class EstadoController {
 
-	//private EstadoRepository estadoRepository;
-	
 	private EstadoService estadoService;
 
 	@Autowired
@@ -33,7 +31,7 @@ public class EstadoController {
 	public List<Estado> listar() {
 		return estadoService.listarTodos();
 	}
-	
+
 	@GetMapping("{id}")
 	public Estado buscar(@PathVariable Integer id) {
 		return estadoService.bucarPorId(id);
@@ -47,9 +45,9 @@ public class EstadoController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(es);
 
 	}
-	
+
 	@DeleteMapping("/{id}")
-	public void deletar (@PathVariable Integer id) {
+	public void deletar(@PathVariable Integer id) {
 		estadoService.excluir(id);
 	}
 

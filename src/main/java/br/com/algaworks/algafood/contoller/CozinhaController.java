@@ -16,23 +16,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.algaworks.algafood.model.Cozinha;
-import br.com.algaworks.algafood.repository.CozinhaRepository;
 import br.com.algaworks.algafood.service.CozinhaService;
 
 @RestController
 @RequestMapping("/cozinha")
 public class CozinhaController {
 
-	@Autowired
-	private CozinhaRepository cozinhaRepository;
+//	@Autowired
+//	private CozinhaRepository cozinhaRepository;
 
 	@Autowired
 	private CozinhaService cozinhaService;
 
 	@PostMapping
 	public ResponseEntity<Cozinha> salvar(@RequestBody @Valid Cozinha cozinha) {
-
-		// Cozinha cz = cozinhaRepository.save(cozinha);
 
 		Cozinha cz = cozinhaService.salvar(cozinha);
 
@@ -41,11 +38,16 @@ public class CozinhaController {
 
 	@GetMapping
 	public List<Cozinha> listar() {
-		return cozinhaRepository.findAll();
+		return cozinhaService.listar();
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Cozinha> excluir(@PathVariable Integer id) {
+	@GetMapping("/{cozinhaId}")
+	public Cozinha buscar(@PathVariable Integer cozinhaId) {
+		return cozinhaService.buscarOuFalhar(cozinhaId);
+	}
+
+	@DeleteMapping("/{cozinhaId}")
+	public ResponseEntity<Cozinha> excluir(@PathVariable Integer cozinhaId) {
 
 		/*
 		 * try {
@@ -64,7 +66,7 @@ public class CozinhaController {
 		 * ResponseEntity.status(HttpStatus.CONFLICT).build(); }
 		 */
 
-		cozinhaService.deletar(id);
+		cozinhaService.deletar(cozinhaId);
 
 		return ResponseEntity.noContent().build();
 
