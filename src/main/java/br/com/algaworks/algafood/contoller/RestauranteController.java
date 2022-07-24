@@ -1,8 +1,10 @@
 package br.com.algaworks.algafood.contoller;
 
 import java.util.List;
-import java.util.Optional;
 
+import javax.validation.Valid;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.algaworks.algafood.exception.EntidadeNaoEncontradaException;
+import br.com.algaworks.algafood.exception.NegocioException;
 import br.com.algaworks.algafood.model.Restaurante;
 import br.com.algaworks.algafood.repository.RestauranteRepository;
 import br.com.algaworks.algafood.service.RestauranteService;
@@ -41,18 +44,32 @@ public class RestauranteController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Restaurante> salvar(@RequestBody Restaurante restaurante) {
+	public ResponseEntity<Restaurante> salvar(@RequestBody @Valid Restaurante input) {
 
-		Restaurante rest = restauranteService.salvar(restaurante);
+		try {
+			Restaurante restaurante = restauranteService.salvar(input);
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(rest);
+			return ResponseEntity.status(HttpStatus.CREATED).body(restaurante);
+
+		} catch (EntidadeNaoEncontradaException e) {
+			throw new NegocioException(e.getMessage());
+
+		}
+
 	}
 
 	@PutMapping("/{restauranteId}")
-	public ResponseEntity<Restaurante> atualizar(@PathVariable Integer restauranteId,
-			@RequestBody Restaurante restaurante) {
+	public ResponseEntity<Restaurante> atualizar(@PathVariable Integer restauranteId, @RequestBody Restaurante input) {
 
-		return null;
+		Restaurante restauranteAtual = restauranteService.buscarOuFalhar(restauranteId);
+
+		BeanUtils.copyProperties(input, restauranteAtual, "restauranteId");
+
+		try {
+			return ResponseEntity.status(HttpStatus.OK).build();
+		} catch (EntidadeNaoEncontradaException e) {
+			throw new NegocioException(e.getMessage());
+		}
 
 	}
 
@@ -60,15 +77,15 @@ public class RestauranteController {
 	public List<Restaurante> listarTodos() {
 		return restauranteService.listarTodos();
 	}
-	
+
 	@DeleteMapping("/{restauranteId}")
-	public ResponseEntity<Restaurante> deletar(@PathVariable Integer restauranteId){
-		
+	public ResponseEntity<Restaurante> deletar(@PathVariable Integer restauranteId) {
+
 //		Optional<Restaurante> restaurante = restauranteRepository.findById(restauranteId)
-//				.orElseThrow(() -> new EntidadeNaoEncontradaException("Não existe código de cozinha com o código %d"));
-		
-		restauranteRepository.deleteById(restauranteId);
-		
+//				.orElseThrow(() -> new EntidadeNaoEncontradaException("Não existe código de cozinha com o código %d", restauranteId));
+
+		restauranteService.deletar(restauranteId);
+
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }

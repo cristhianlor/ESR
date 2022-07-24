@@ -49,6 +49,10 @@ public class CozinhaController {
 	@DeleteMapping("/{cozinhaId}")
 	public ResponseEntity<Cozinha> excluir(@PathVariable Integer cozinhaId) {
 
+		cozinhaService.deletar(cozinhaId);
+
+		return ResponseEntity.noContent().build();
+
 		/*
 		 * try {
 		 * 
@@ -65,10 +69,6 @@ public class CozinhaController {
 		 * } catch (EntidadeEmUsoException e) { return
 		 * ResponseEntity.status(HttpStatus.CONFLICT).build(); }
 		 */
-
-		cozinhaService.deletar(cozinhaId);
-
-		return ResponseEntity.noContent().build();
 
 	}
 }

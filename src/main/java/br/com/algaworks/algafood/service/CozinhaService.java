@@ -22,22 +22,14 @@ public class CozinhaService {
 	@Autowired
 	public CozinhaRepository cozinhaRepository;
 
-	
 	public Cozinha salvar(Cozinha cozinha) {
 		return cozinhaRepository.save(cozinha);
 	}
-	
-	public List<Cozinha> listar(){
+
+	public List<Cozinha> listar() {
 		return cozinhaRepository.findAll();
 	}
 
-	
-	public Cozinha buscarOuFalhar(Integer cozinhaId) {
-		return cozinhaRepository.findById(cozinhaId).orElseThrow(
-				() -> new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, cozinhaId)));
-	}
-
-	
 	public void deletar(Integer cozinhaId) {
 
 		try {
@@ -46,10 +38,17 @@ public class CozinhaService {
 
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(String.format(MSG_COZINHA_EM_USO, cozinhaId));
-
+			// throw new ResponseStatusException(HttpStatus.CONFLICT,
+			// String.format(MSG_COZINHA_EM_USO, cozinhaId));
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, cozinhaId));
-		}
+		} // throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+			// String.format(MSG_COZINHA_EM_USO, cozinhaId));
+	}
+
+	public Cozinha buscarOuFalhar(Integer cozinhaId) {
+		return cozinhaRepository.findById(cozinhaId).orElseThrow(
+				() -> new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, cozinhaId)));
 	}
 
 }
