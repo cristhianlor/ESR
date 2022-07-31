@@ -22,9 +22,6 @@ import br.com.algaworks.algafood.service.CozinhaService;
 @RequestMapping("/cozinha")
 public class CozinhaController {
 
-//	@Autowired
-//	private CozinhaRepository cozinhaRepository;
-
 	@Autowired
 	private CozinhaService cozinhaService;
 
@@ -53,24 +50,6 @@ public class CozinhaController {
 
 		return ResponseEntity.noContent().build();
 
-		/*
-		 * try {
-		 * 
-		 * Optional<Cozinha> cozinha = cozinhaRepository.findById(id);
-		 * 
-		 * if (cozinha.isPresent()) {
-		 * 
-		 * cozinhaRepository.deleteById(id);
-		 * 
-		 * return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); }
-		 * 
-		 * return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		 * 
-		 * } catch (EntidadeEmUsoException e) { return
-		 * ResponseEntity.status(HttpStatus.CONFLICT).build(); }
-		 */
-
 	}
-	
-	
+
 }

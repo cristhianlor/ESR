@@ -27,11 +27,14 @@ public class EstadoService {
 		return estadoRepository.findAll();
 	}
 	
-	public Estado bucarPorId (Integer id) {
-		return estadoRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException("Entidade com o id " + id + " não foi localizada/não existe"));
+	public Estado buscarOuFalhar (Integer estadoId) {
+		return estadoRepository.findById(estadoId)
+		.orElseThrow(() -> new EntidadeNaoEncontradaException("Entidade com o id " + estadoId + " não foi localizada/não existe"));
 	}
 	
 	public void excluir (Integer id) {
 		estadoRepository.deleteById(id);
 	}
+	
+	
 }

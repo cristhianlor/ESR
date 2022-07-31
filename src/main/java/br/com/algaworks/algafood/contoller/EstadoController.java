@@ -32,9 +32,9 @@ public class EstadoController {
 		return estadoService.listarTodos();
 	}
 
-	@GetMapping("{id}")
-	public Estado buscar(@PathVariable Integer id) {
-		return estadoService.bucarPorId(id);
+	@GetMapping("{estadoId}")
+	public Estado buscarPorId(@PathVariable Integer estadoId) {
+		return estadoService.buscarOuFalhar(estadoId);
 	}
 
 	@PostMapping
@@ -46,9 +46,9 @@ public class EstadoController {
 
 	}
 
-	@DeleteMapping("/{id}")
-	public void deletar(@PathVariable Integer id) {
-		estadoService.excluir(id);
+	@DeleteMapping("/{estadoId}")
+	public void deletar(@PathVariable Integer estadoId) {
+		estadoService.excluir(estadoId);
 	}
 
 }
