@@ -1,7 +1,5 @@
 package br.com.algaworks.algafood.exceptionhandler;
 
-import java.time.LocalDateTime;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,26 +16,42 @@ import br.com.algaworks.algafood.exception.NegocioException;
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(EntidadeNaoEncontradaException.class)
-	public ResponseEntity<?> tratarEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e,
+	public ResponseEntity<?> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e,
 			WebRequest request) {
+		
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		
+		ProblemType pt = ProblemType.ENTIDADE_NAO_ECONTRADA;
+		
+		String detail = e.getMessage();
+		
+		Problem problem = createProblemBuilder(status, pt, detail)
+				.build();
+				
+		/*
+		 * Problem problem = Problem.builder() .status(status.value())
+		 * .type("https://algafood.com.br/entidade-nao-encontrada")
+		 * .title("Entidade não encontrada") .detail(e.getMessage()) .build();
+		 */
+		
 
-		return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+		return handleExceptionInternal(e, problem, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 
 	@ExceptionHandler(EntidadeEmUsoException.class)
-	public ResponseEntity<?> tratarEntidadeEmUsoException(EntidadeEmUsoException e) {
+	public ResponseEntity<?> handleEntidadeEmUsoException(EntidadeEmUsoException e) {
 
-		Problema problema = Problema.builder().dataHora(LocalDateTime.now()).mensagem(e.getMessage()).build();
+		Problem problem = Problem.builder().title(e.getMessage()).build();
 
-		return ResponseEntity.status(HttpStatus.CONFLICT).body(problema);
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(problem);
 	}
 
 	@ExceptionHandler(NegocioException.class)
-	public ResponseEntity<?> tratarNegocioException(NegocioException e) {
+	public ResponseEntity<?> handleNegocioException(NegocioException e) {
 
-		Problema problema = Problema.builder().dataHora(LocalDateTime.now()).mensagem(e.getMessage()).build();
+		Problem problem = Problem.builder().title(e.getMessage()).build();
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problema);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problem);
 	}
 
 	@Override
@@ -45,16 +59,26 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 			HttpStatus status, WebRequest request) {
 
 		if (body == null) {
-			body = Problema.builder().dataHora(LocalDateTime.now()).mensagem(status.getReasonPhrase()).build();
+			body = Problem.builder().title(status.getReasonPhrase()).build();
 
 		} else if (body instanceof String) {
-			body = Problema.builder()
-					.dataHora(LocalDateTime.now())
-					.mensagem((String) body)
+			body = Problem.builder()
+				   	.title((String) body)
+				   	.status(status.value())
 					.build();
 		}
 
 		return super.handleExceptionInternal(ex, body, headers, status, request);
+	}
+	
+	private Problem.ProblemBuilder createProblemBuilder(HttpStatus status, 
+			ProblemType problemType, String detail) {
+		
+		return Problem.builder()
+				.status(status.value())
+				.type(problemType.getUri())
+				.title(problemType.getTitle())
+				.detail(detail);
 	}
 
 }
