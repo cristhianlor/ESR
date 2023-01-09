@@ -20,27 +20,23 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.algaworks.algafood.exception.EntidadeNaoEncontradaException;
 import br.com.algaworks.algafood.exception.NegocioException;
 import br.com.algaworks.algafood.model.Restaurante;
-import br.com.algaworks.algafood.repository.RestauranteRepository;
 import br.com.algaworks.algafood.service.RestauranteService;
 
 @RestController
-@RequestMapping("/restaurante")
+@RequestMapping("/restaurantes")
 public class RestauranteController {
-
-	private RestauranteRepository restauranteRepository;
 
 	private RestauranteService restauranteService;
 
 	@Autowired
-	public RestauranteController(RestauranteRepository restauranteRepository, RestauranteService restauranteService) {
-		this.restauranteRepository = restauranteRepository;
+	public RestauranteController(RestauranteService restauranteService) {
+
 		this.restauranteService = restauranteService;
 	}
 
 	@GetMapping("/{restauranteId}")
-	public Restaurante buscarOuFalhar(@PathVariable Integer restauranteId) {
-		return restauranteRepository.findById(restauranteId)
-				.orElseThrow(() -> new EntidadeNaoEncontradaException("Não existe código de cozinha com o código %d"));
+	public Restaurante buscar(@PathVariable Integer restauranteId) {
+		return restauranteService.buscarOuFalhar(restauranteId);
 	}
 
 	@PostMapping
@@ -59,14 +55,16 @@ public class RestauranteController {
 	}
 
 	@PutMapping("/{restauranteId}")
-	public ResponseEntity<Restaurante> atualizar(@PathVariable Integer restauranteId, @RequestBody Restaurante input) {
+	public Restaurante atualizar(@PathVariable Integer restauranteId, @RequestBody Restaurante input) {
 
 		Restaurante restauranteAtual = restauranteService.buscarOuFalhar(restauranteId);
 
-		BeanUtils.copyProperties(input, restauranteAtual, "restauranteId");
-
 		try {
-			return ResponseEntity.status(HttpStatus.OK).build();
+
+			BeanUtils.copyProperties(input, restauranteAtual, "restauranteId");
+
+			return restauranteService.salvar(restauranteAtual);
+
 		} catch (EntidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}

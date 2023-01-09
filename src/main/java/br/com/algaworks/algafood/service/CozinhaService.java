@@ -50,5 +50,11 @@ public class CozinhaService {
 		return cozinhaRepository.findById(cozinhaId).orElseThrow(
 				() -> new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, cozinhaId)));
 	}
+	
+	public Cozinha atualizar (Integer cozinhaId) {
+		
+		
+		return cozinhaRepository.findById(cozinhaId).orElseThrow();
+	}
 
 }

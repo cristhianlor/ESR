@@ -15,9 +15,7 @@ public class RestauranteService {
 
 	private RestauranteRepository restauranteRepository;
 
-	// private CozinhaRepository cozinhaRepository;
-
-	private static final String MSG_COZINHA_NAO_ENCONTRADA = "Não existe código de cozinha com o código %d";
+	private static final String MSG_RESTAURANTE_NAO_ENCONTRADO = "Não existe código de restaurante com o código %d";
 
 	@Autowired
 	public RestauranteService(RestauranteRepository restauranteRepository) {
@@ -31,11 +29,16 @@ public class RestauranteService {
 
 	public Restaurante buscarOuFalhar(Integer restauranteId) {
 		return restauranteRepository.findById(restauranteId).orElseThrow(
-				() -> new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, restauranteId)));
+				() -> new EntidadeNaoEncontradaException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId)));
 	}
 
 	public List<Restaurante> listarTodos() {
 		return restauranteRepository.findAll();
+	}
+
+	public Restaurante atualizar(Integer restauranteId) {
+
+		return restauranteRepository.findById(restauranteId).orElseThrow();
 	}
 
 	public void deletar(Integer restauranteId) {
@@ -43,8 +46,8 @@ public class RestauranteService {
 		try {
 			restauranteRepository.deleteById(restauranteId);
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, restauranteId));
-		} 
+			throw new EntidadeNaoEncontradaException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId));
+		}
 
 	}
 
