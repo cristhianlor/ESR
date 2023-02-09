@@ -45,6 +45,11 @@ public class RestauranteService {
 			BigDecimal taxaFinal){
 		return restauranteRepository.findByTaxaFreteBetween(taxaInicial, taxaFinal);
 	}
+	
+	public List<Restaurante> find(String nome, BigDecimal taxaFreteInicial, 
+			BigDecimal taxaFreteFinal){
+		return restauranteRepository.find(nome, taxaFreteInicial, taxaFreteFinal);
+	}
 
 	public Restaurante atualizar(Integer restauranteId) {
 

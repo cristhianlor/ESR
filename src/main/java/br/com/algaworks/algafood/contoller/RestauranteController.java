@@ -50,6 +50,12 @@ public class RestauranteController {
 	public List<Restaurante> consultarPorNome(String nome, Integer cozinhaId){
 		return restauranteService.consultarPorNome(nome, cozinhaId);
 	}
+	
+	@GetMapping("/por-nome-e-frete")
+	public List<Restaurante> restaurantesPorTaxaFrete(String nome, BigDecimal taxaFreteInicial, 
+			BigDecimal taxaFreteFinal){
+		return restauranteService.find(nome, taxaFreteInicial, taxaFreteFinal);
+	}
 
 	@PostMapping
 	public ResponseEntity<Restaurante> salvar(@RequestBody @Valid Restaurante input) {

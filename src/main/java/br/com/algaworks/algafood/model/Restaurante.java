@@ -51,7 +51,7 @@ public class Restaurante {
 	@JoinColumn(name = "cozinha_id", nullable = false, 
 	foreignKey = @ForeignKey(name = "cozinha_id"))
 	private Cozinha cozinha;
-	
+	@JsonIgnore
 	@Embedded
 	private Endereco endereco;
 
@@ -67,6 +67,7 @@ public class Restaurante {
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos = new ArrayList<>();
 	
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "tb_rest_fm_pagto", 
 	joinColumns = @JoinColumn(name = "restaurante_id"), 
