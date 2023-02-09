@@ -17,7 +17,7 @@ insert into tb_cidade (id, nm_cidade, estado_id) values (null, 'Belo Horizonte',
 insert into tb_cidade (id, nm_cidade, estado_id) values (null, 'Salvador', 4);
 insert into tb_cidade (id, nm_cidade, estado_id) values (null, 'Vitória', 4);
 
-insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, dt_cad, dt_atz, endereco_cidade_id, endereco_cep, endereco_logr, endereco_num, endereco_comp, endereco_bairro) values (null,'Romário', 10.5, 1, current_date, current_date, 1, '01415000', 'Rua Bela Cintra', '344', 'ap 44', 'Bela Vista');
+insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, dt_cad, dt_atz, endereco_cidade_id, endereco_cep, endereco_logr, endereco_num, endereco_comp, endereco_bairro) values (null,'Romario', 10.5, 1, current_date, current_date, 1, '01415000', 'Rua Bela Cintra', '344', 'ap 44', 'Bela Vista');
 insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, dt_cad, dt_atz) values (null,'Ronaldinho', 12.5, 1, current_date, current_date);
 insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, dt_cad, dt_atz) values (null,'Zamorano', 9.5, 2, current_date, current_date);
 insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, dt_cad, dt_atz) values (null,'Salas', 8.5, 2, current_date, current_date);

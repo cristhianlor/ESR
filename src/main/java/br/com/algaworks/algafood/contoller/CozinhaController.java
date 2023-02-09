@@ -41,6 +41,12 @@ public class CozinhaController {
 	public List<Cozinha> listar() {
 		return cozinhaService.listar();
 	}
+	
+	@GetMapping("/por-nome")
+	public List<Cozinha> consultarCozinhaPorNome(String nome){
+		return cozinhaService.consultarCozinhaPorNome(nome);
+	}
+
 
 	@GetMapping("/{cozinhaId}")
 	public Cozinha buscar(@PathVariable Integer cozinhaId) {

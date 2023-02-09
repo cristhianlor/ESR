@@ -1,5 +1,6 @@
 package br.com.algaworks.algafood.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,15 @@ public class RestauranteService {
 
 	public List<Restaurante> listarTodos() {
 		return restauranteRepository.findAll();
+	}
+	
+	public List<Restaurante> consultarPorNome(String nome, Integer cozinhaId){
+		return restauranteRepository.consultarPorNome(nome, cozinhaId);
+	}
+	
+	public List<Restaurante> restaurantesPorTaxaFrete(BigDecimal taxaInicial, 
+			BigDecimal taxaFinal){
+		return restauranteRepository.findByTaxaFreteBetween(taxaInicial, taxaFinal);
 	}
 
 	public Restaurante atualizar(Integer restauranteId) {

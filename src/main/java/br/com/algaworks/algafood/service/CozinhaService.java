@@ -21,11 +21,15 @@ public class CozinhaService {
 
 	@Autowired
 	public CozinhaRepository cozinhaRepository;
-
+	
 	public Cozinha salvar(Cozinha cozinha) {
 		return cozinhaRepository.save(cozinha);
 	}
-
+	
+	public List<Cozinha> consultarCozinhaPorNome(String nome){
+		return cozinhaRepository.findByNome(nome);
+	}
+	
 	public List<Cozinha> listar() {
 		return cozinhaRepository.findAll();
 	}
