@@ -19,8 +19,7 @@ public class RestauranteRepositoryImpl {
 	@PersistenceContext
 	private EntityManager em;
 
-	public List<Restaurante> find(String nome, BigDecimal taxaFreteInicial, 
-			BigDecimal taxaFreteFinal) {
+	public List<Restaurante> find(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
 
 		var jpql = new StringBuilder();
 
@@ -44,8 +43,7 @@ public class RestauranteRepositoryImpl {
 			parametros.put("taxaFinal", taxaFreteFinal);
 		}
 
-		TypedQuery<Restaurante> query = em.createQuery(jpql.toString(), 
-				Restaurante.class);
+		TypedQuery<Restaurante> query = em.createQuery(jpql.toString(), Restaurante.class);
 
 		parametros.forEach((chave, valor) -> query.setParameter(chave, valor));
 

@@ -1,5 +1,6 @@
 package br.com.algaworks.algafood.exceptionhandler;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException e,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+		Throwable rootCause = ExceptionUtils.getRootCause(e);
 
 		ProblemType pt = ProblemType.MENSAGEM_INCOMPREENSIVEL;
 
@@ -86,10 +89,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 	private Problem.ProblemBuilder createProblemBuilder(HttpStatus status, ProblemType problemType, String detail) {
 
-		return Problem.builder()
-				.status(status.value())
-				.type(problemType.getUri())
-				.title(problemType.getTitle())
+		return Problem.builder().status(status.value()).type(problemType.getUri()).title(problemType.getTitle())
 				.detail(detail);
 	}
 

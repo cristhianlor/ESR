@@ -38,11 +38,11 @@ public class EstadoController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Estado> salvar(@RequestBody Estado estado) {
+	public ResponseEntity<Estado> salvar(@RequestBody Estado input) {
 
-		Estado es = estadoService.salvar(estado);
+		Estado estado = estadoService.salvar(input);
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(es);
+		return ResponseEntity.status(HttpStatus.CREATED).body(estado);
 
 	}
 

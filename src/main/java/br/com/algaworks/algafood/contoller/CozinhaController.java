@@ -21,7 +21,9 @@ import br.com.algaworks.algafood.exception.EntidadeNaoEncontradaException;
 import br.com.algaworks.algafood.exception.NegocioException;
 import br.com.algaworks.algafood.model.Cozinha;
 import br.com.algaworks.algafood.service.CozinhaService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("/cozinha")
 public class CozinhaController {
@@ -39,11 +41,13 @@ public class CozinhaController {
 
 	@GetMapping
 	public List<Cozinha> listar() {
+		log.info("Listando cozinhas com o log....");
 		return cozinhaService.listar();
 	}
 	
 	@GetMapping("/por-nome")
 	public List<Cozinha> consultarCozinhaPorNome(String nome){
+		log.info("Consultando cozinhas por nome com log....");
 		return cozinhaService.consultarCozinhaPorNome(nome);
 	}
 
