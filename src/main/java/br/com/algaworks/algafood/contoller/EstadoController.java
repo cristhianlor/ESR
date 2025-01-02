@@ -2,6 +2,7 @@ package br.com.algaworks.algafood.contoller;
 
 import java.util.List;
 
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.algaworks.algafood.model.Estado;
 import br.com.algaworks.algafood.service.EstadoService;
 
+@Api(tags = "Estados")
 @RestController
 @RequestMapping("/estado")
 public class EstadoController {
@@ -24,17 +26,8 @@ public class EstadoController {
 
 	@Autowired
 	public EstadoController(EstadoService estadoService) {
+
 		this.estadoService = estadoService;
-	}
-
-	@GetMapping
-	public List<Estado> listar() {
-		return estadoService.listarTodos();
-	}
-
-	@GetMapping("{estadoId}")
-	public Estado buscarPorId(@PathVariable Integer estadoId) {
-		return estadoService.buscarOuFalhar(estadoId);
 	}
 
 	@PostMapping
@@ -46,8 +39,21 @@ public class EstadoController {
 
 	}
 
+	@GetMapping
+	public List<Estado> listar() {
+
+		return estadoService.listarTodos();
+	}
+
+	@GetMapping("{estadoId}")
+	public Estado buscarPorId(@PathVariable Integer estadoId) {
+
+		return estadoService.buscarOuFalhar(estadoId);
+	}
+
 	@DeleteMapping("/{estadoId}")
 	public void deletar(@PathVariable Integer estadoId) {
+
 		estadoService.excluir(estadoId);
 	}
 

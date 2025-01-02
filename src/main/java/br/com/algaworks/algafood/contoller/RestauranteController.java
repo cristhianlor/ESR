@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +26,7 @@ import br.com.algaworks.algafood.exception.NegocioException;
 import br.com.algaworks.algafood.model.Restaurante;
 import br.com.algaworks.algafood.service.RestauranteService;
 
+@Api(tags = "Restaurantes")
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
@@ -35,28 +39,7 @@ public class RestauranteController {
 		this.restauranteService = restauranteService;
 	}
 
-	@GetMapping("/{restauranteId}")
-	public Restaurante buscar(@PathVariable Integer restauranteId) {
-		return restauranteService.buscarOuFalhar(restauranteId);
-	}
-	
-	@GetMapping("/por-taxa-frete")
-	public List<Restaurante> restaurantesPorTaxaFrete(BigDecimal taxaInicial, 
-			BigDecimal taxaFinal){
-		return restauranteService.restaurantesPorTaxaFrete(taxaInicial, taxaFinal);
-	}
-	
-	@GetMapping("/consultar-por-nome")
-	public List<Restaurante> consultarPorNome(String nome, Integer cozinhaId){
-		return restauranteService.consultarPorNome(nome, cozinhaId);
-	}
-	
-	@GetMapping("/por-nome-e-frete")
-	public List<Restaurante> restaurantesPorTaxaFrete(String nome, BigDecimal taxaFreteInicial, 
-			BigDecimal taxaFreteFinal){
-		return restauranteService.find(nome, taxaFreteInicial, taxaFreteFinal);
-	}
-
+	@ApiOperation("Cadastra um restaurante")
 	@PostMapping
 	public ResponseEntity<Restaurante> salvar(@RequestBody @Valid Restaurante input) {
 
@@ -72,8 +55,9 @@ public class RestauranteController {
 
 	}
 
+	@ApiOperation("Atualiza um restaurante por ID")
 	@PutMapping("/{restauranteId}")
-	public Restaurante atualizar(@PathVariable Integer restauranteId, @RequestBody Restaurante input) {
+	public ResponseEntity<?> atualizar(@PathVariable Integer restauranteId, @RequestBody Restaurante input) {
 
 		Restaurante restauranteAtual = restauranteService.buscarOuFalhar(restauranteId);
 
@@ -81,7 +65,9 @@ public class RestauranteController {
 
 			BeanUtils.copyProperties(input, restauranteAtual, "restauranteId");
 
-			return restauranteService.salvar(restauranteAtual);
+			restauranteService.salvar(restauranteAtual);
+
+			return ResponseEntity.status(HttpStatus.OK).body(restauranteAtual);
 
 		} catch (EntidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
@@ -89,11 +75,41 @@ public class RestauranteController {
 
 	}
 
+	@ApiOperation("Busca um restaurante por ID")
+	@GetMapping("/{restauranteId}")
+	public Restaurante buscar(@ApiParam(value = "ID de um restaurante", example = "1")
+							  @PathVariable Integer restauranteId) {
+		return restauranteService.buscarOuFalhar(restauranteId);
+	}
+
+	@ApiOperation("Busca um restaurante por taxa frete")
+	@GetMapping("/por-taxa-frete")
+	public List<Restaurante> restaurantesPorTaxaFrete(BigDecimal taxaInicial,
+			BigDecimal taxaFinal){
+		return restauranteService.restaurantesPorTaxaFrete(taxaInicial, taxaFinal);
+	}
+
+	@ApiOperation("Busca um restaurante por nome")
+	@GetMapping("/consultar-por-nome")
+	public List<Restaurante> consultarPorNome(String nome, Integer cozinhaId){
+		return restauranteService.consultarPorNome(nome, cozinhaId);
+	}
+
+	@ApiOperation("Busca um restaurante por nome e taxa frete")
+	@GetMapping("/por-nome-e-frete")
+	public List<Restaurante> restaurantesPorTaxaFrete(String nome, BigDecimal taxaFreteInicial,
+			BigDecimal taxaFreteFinal){
+		return restauranteService.find(nome, taxaFreteInicial, taxaFreteFinal);
+	}
+
+	@ApiOperation("Lista todos os restaurantes")
 	@GetMapping
 	public List<Restaurante> listarTodos() {
+
 		return restauranteService.listarTodos();
 	}
 
+	@ApiOperation("Exclui um restaurante por ID")
 	@DeleteMapping("/{restauranteId}")
 	public ResponseEntity<Restaurante> deletar(@PathVariable Integer restauranteId) {
 

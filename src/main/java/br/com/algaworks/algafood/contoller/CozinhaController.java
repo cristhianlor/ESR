@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.Api;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,8 +25,9 @@ import br.com.algaworks.algafood.service.CozinhaService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Api(tags = "Cozinhas")
 @RestController
-@RequestMapping("/cozinha")
+@RequestMapping("/cozinhas")
 public class CozinhaController {
 
 	@Autowired
@@ -39,38 +41,45 @@ public class CozinhaController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(cozinha);
 	}
 
-	@GetMapping
-	public List<Cozinha> listar() {
-		log.info("Listando cozinhas com o log....");
-		return cozinhaService.listar();
-	}
-	
-	@GetMapping("/por-nome")
-	public List<Cozinha> consultarCozinhaPorNome(String nome){
-		log.info("Consultando cozinhas por nome com log....");
-		return cozinhaService.consultarCozinhaPorNome(nome);
-	}
-
-
-	@GetMapping("/{cozinhaId}")
-	public Cozinha buscar(@PathVariable Integer cozinhaId) {
-		return cozinhaService.buscarOuFalhar(cozinhaId);
-	}
-	
 	@PutMapping("/{cozinhaId}")
-	public Cozinha atualizar(@PathVariable Integer cozinhaId, @RequestBody Cozinha input) {
+	public ResponseEntity<Cozinha> atualizar(@PathVariable Integer cozinhaId, @RequestBody Cozinha input) {
 
 		try {
 			Cozinha cozinhaAtual = cozinhaService.buscarOuFalhar(cozinhaId);
 
-			BeanUtils.copyProperties(input, cozinhaAtual, "cozinhaId");
 
-			return cozinhaService.salvar(cozinhaAtual);
+			if(cozinhaAtual != null) {
+				BeanUtils.copyProperties(input, cozinhaAtual, "cozinhaId");
+
+				cozinhaService.salvar(cozinhaAtual);
+
+				return ResponseEntity.status(HttpStatus.OK).body(cozinhaAtual);
+			}
+
+			return ResponseEntity.notFound().build();
 
 		} catch (EntidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
 
+	}
+
+	@GetMapping
+	public List<Cozinha> listar() {
+		log.info("Listando cozinhas....");
+		return cozinhaService.listar();
+	}
+
+	@GetMapping("/por-nome")
+	public List<Cozinha> consultarCozinhaPorNome(String nome){
+		log.info("Consultando cozinhas por nome....");
+		return cozinhaService.consultarCozinhaPorNome(nome);
+	}
+
+	@GetMapping("/{cozinhaId}")
+	public Cozinha buscar(@PathVariable Integer cozinhaId) {
+		log.info("Iniciando busca de cozinhas por id " + cozinhaId);
+		return cozinhaService.buscarOuFalhar(cozinhaId);
 	}
 
 	@DeleteMapping("/{cozinhaId}")

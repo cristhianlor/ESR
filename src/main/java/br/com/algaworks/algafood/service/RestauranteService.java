@@ -14,14 +14,11 @@ import br.com.algaworks.algafood.repository.RestauranteRepository;
 @Service
 public class RestauranteService {
 
-	private RestauranteRepository restauranteRepository;
-
-	private static final String MSG_RESTAURANTE_NAO_ENCONTRADO = "Não existe código de restaurante com o código %d";
+	private static final String MSG_RESTAURANTE_NAO_ENCONTRADO = "Não existe restaurante com o código %d";
 
 	@Autowired
-	public RestauranteService(RestauranteRepository restauranteRepository) {
-		this.restauranteRepository = restauranteRepository;
-	}
+	private RestauranteRepository restauranteRepository;
+
 
 	public Restaurante salvar(Restaurante restaurante) {
 
@@ -29,25 +26,30 @@ public class RestauranteService {
 	}
 
 	public Restaurante buscarOuFalhar(Integer restauranteId) {
+
 		return restauranteRepository.findById(restauranteId).orElseThrow(
 				() -> new EntidadeNaoEncontradaException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId)));
 	}
 
 	public List<Restaurante> listarTodos() {
+
 		return restauranteRepository.findAll();
 	}
 	
-	public List<Restaurante> consultarPorNome(String nome, Integer cozinhaId){
+	public List<Restaurante> consultarPorNome(String nome, Integer cozinhaId) {
+
 		return restauranteRepository.consultarPorNome(nome, cozinhaId);
 	}
 	
 	public List<Restaurante> restaurantesPorTaxaFrete(BigDecimal taxaInicial, 
-			BigDecimal taxaFinal){
+			BigDecimal taxaFinal) {
+
 		return restauranteRepository.findByTaxaFreteBetween(taxaInicial, taxaFinal);
 	}
 	
 	public List<Restaurante> find(String nome, BigDecimal taxaFreteInicial, 
 			BigDecimal taxaFreteFinal){
+
 		return restauranteRepository.find(nome, taxaFreteInicial, taxaFreteFinal);
 	}
 

@@ -11,6 +11,7 @@ import br.com.algaworks.algafood.exception.EntidadeEmUsoException;
 import br.com.algaworks.algafood.exception.EntidadeNaoEncontradaException;
 import br.com.algaworks.algafood.model.Cozinha;
 import br.com.algaworks.algafood.repository.CozinhaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CozinhaService {
@@ -21,19 +22,24 @@ public class CozinhaService {
 
 	@Autowired
 	public CozinhaRepository cozinhaRepository;
-	
+
+	@Transactional
 	public Cozinha salvar(Cozinha cozinha) {
+
 		return cozinhaRepository.save(cozinha);
 	}
 	
 	public List<Cozinha> consultarCozinhaPorNome(String nome){
+
 		return cozinhaRepository.findByNome(nome);
 	}
 	
 	public List<Cozinha> listar() {
+
 		return cozinhaRepository.findAll();
 	}
 
+	@Transactional
 	public void deletar(Integer cozinhaId) {
 
 		try {
@@ -56,8 +62,7 @@ public class CozinhaService {
 	}
 	
 	public Cozinha atualizar (Integer cozinhaId) {
-		
-		
+
 		return cozinhaRepository.findById(cozinhaId).orElseThrow();
 	}
 

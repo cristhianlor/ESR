@@ -12,7 +12,10 @@ import br.com.algaworks.algafood.model.Restaurante;
 
 @Repository
 public interface RestauranteRepository extends JpaRepository<Restaurante, Integer> {
-	
+
+	@Query("from Restaurante r join r.cozinha left join fetch r.formasPagamento")
+	List<Restaurante> findAll();
+
 	List<Restaurante> findByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);
 	
 	@Query("from Restaurante where nome like %:nome% and cozinha.id = :id")

@@ -6,7 +6,10 @@ insert into tb_cozinha (id, cozinha) values (null, 'Uruguaia');
 insert into tb_estado (id, nm_estado) values (null, 'São Paulo');
 insert into tb_estado (id, nm_estado) values (null, 'Rio de Janeiro');
 insert into tb_estado (id, nm_estado) values (null, 'Minas Gerais');
-insert into tb_estado (id, nm_estado) values (null, 'Bahia');
+insert into tb_estado (id, nm_estado) values (null, 'Espírito Santo');
+insert into tb_estado (id, nm_estado) values (null, 'Paraná');
+insert into tb_estado (id, nm_estado) values (null, 'Santa Catarina');
+insert into tb_estado (id, nm_estado) values (null, 'Rio Grande do Sul');
 
 insert into tb_cidade (id, nm_cidade, estado_id) values (null, 'São Paulo', 1);
 insert into tb_cidade (id, nm_cidade, estado_id) values (null, 'São Roque', 1);
@@ -17,12 +20,12 @@ insert into tb_cidade (id, nm_cidade, estado_id) values (null, 'Belo Horizonte',
 insert into tb_cidade (id, nm_cidade, estado_id) values (null, 'Salvador', 4);
 insert into tb_cidade (id, nm_cidade, estado_id) values (null, 'Vitória', 4);
 
-insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, dt_cad, dt_atz, endereco_cidade_id, endereco_cep, endereco_logr, endereco_num, endereco_comp, endereco_bairro) values (null,'Romario', 10.5, 1, current_date, current_date, 1, '01415000', 'Rua Bela Cintra', '344', 'ap 44', 'Bela Vista');
-insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, dt_cad, dt_atz) values (null,'Ronaldinho', 12.5, 1, current_date, current_date);
-insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, dt_cad, dt_atz) values (null,'Zamorano', 9.5, 2, current_date, current_date);
-insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, dt_cad, dt_atz) values (null,'Salas', 8.5, 2, current_date, current_date);
-insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, dt_cad, dt_atz) values (null,'Messi', 7.5, 3, current_date, current_date);
-insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, dt_cad, dt_atz) values (null,'Aguirre', 6.5, 4, current_date, current_date);
+insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cidade_id, end_cep, end_logr, end_num, end_comp, end_bairro) values (null,'Romario', 10.5, 1, current_date, current_date, 1, '01001000', 'Rua 1', '100', '1º andar', 'Centro');
+insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, data_cadastro, data_atualizacao) values (null,'Ronaldinho', 12.5, 1, current_date, current_date);
+insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, data_cadastro, data_atualizacao) values (null,'Zamorano', 9.5, 2, current_date, current_date);
+insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, data_cadastro, data_atualizacao) values (null,'Salas', 8.5, 2, current_date, current_date);
+insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, data_cadastro, data_atualizacao) values (null,'Messi', 7.5, 3, current_date, current_date);
+insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, data_cadastro, data_atualizacao) values (null,'Aguirre', 6.5, 4, current_date, current_date);
 
 insert into tb_fm_pagto (id, desc_fm_pagto) values (null, 'Débito');
 insert into tb_fm_pagto (id, desc_fm_pagto) values (null, 'Crédito');

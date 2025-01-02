@@ -1,5 +1,11 @@
 package br.com.algaworks.algafood.exceptionhandler;
 
+import br.com.algaworks.algafood.exception.EntidadeEmUsoException;
+import br.com.algaworks.algafood.exception.EntidadeNaoEncontradaException;
+import br.com.algaworks.algafood.exception.NegocioException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -10,9 +16,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import br.com.algaworks.algafood.exception.EntidadeEmUsoException;
-import br.com.algaworks.algafood.exception.EntidadeNaoEncontradaException;
-import br.com.algaworks.algafood.exception.NegocioException;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -22,14 +28,57 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 
 		Throwable rootCause = ExceptionUtils.getRootCause(e);
+		
+		if(rootCause instanceof InvalidFormatException) {
+			return handleInvalidFormatException((InvalidFormatException) rootCause, headers, status, request);
+		}
+
+		else if(rootCause instanceof PropertyBindingException) {
+			return handlePropertyBindingException((PropertyBindingException) rootCause, headers, status, request);
+		}
 
 		ProblemType pt = ProblemType.MENSAGEM_INCOMPREENSIVEL;
 
 		String detail = "O corpo da requisição está inválido. Verifique o erro de sintaxe";
 
-		Problem problem = createProblemBuilder(status, pt, detail).build();
+		Problem problem = createProblemBuilder(status, pt, detail)
+							.build();
 
 		return handleExceptionInternal(e, problem, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+
+	}
+
+	private ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException e,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+		String path = joinPath(e.getPath());
+
+		ProblemType pt = ProblemType.MENSAGEM_INCOMPREENSIVEL;
+
+		String detail = String.format("A propriedade '%s' não é válida. "
+				+ "Remova essa propriedade e tente novamente.", path);
+
+		Problem problem = createProblemBuilder(status, pt, detail)
+				.build();
+
+		return handleExceptionInternal(e, problem, headers, status, request);
+	}
+
+	private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException e,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+		String path = joinPath(e.getPath());
+
+		ProblemType pt = ProblemType.MENSAGEM_INCOMPREENSIVEL;
+
+		String detail = String.format("A propriedade '%s' recebeu o valor '%s', que é de um tipo inválido. "
+				+ "Corrija e informe um valor compatível com o tipo %s.", path,
+				e.getValue(), e.getTargetType().getSimpleName());
+
+		Problem problem = createProblemBuilder(status, pt, detail)
+							.build();
+
+		return handleExceptionInternal(e, problem, headers, status, request);
 	}
 
 	@ExceptionHandler(EntidadeNaoEncontradaException.class)
@@ -44,7 +93,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 		Problem problem = createProblemBuilder(status, pt, detail).build();
 
-		return handleExceptionInternal(e, problem, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+		return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
 	}
 
 	@ExceptionHandler(EntidadeEmUsoException.class)
@@ -58,19 +107,22 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 		Problem problem = createProblemBuilder(status, pt, detail).build();
 
-		return handleExceptionInternal(e, problem, new HttpHeaders(), HttpStatus.CONFLICT, request);
+		return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
 
-//		Problem problem = Problem.builder().title(e.getMessage()).build();
-//
-//		return ResponseEntity.status(HttpStatus.CONFLICT).body(problem);
 	}
 
 	@ExceptionHandler(NegocioException.class)
-	public ResponseEntity<?> handleNegocioException(NegocioException e) {
+	public ResponseEntity<?> handleNegocioException(NegocioException e, WebRequest request) {
 
-		Problem problem = Problem.builder().title(e.getMessage()).build();
+		HttpStatus status = HttpStatus.BAD_REQUEST;
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problem);
+		ProblemType pt = ProblemType.ERRO_NEGOCIO;
+
+		String detail = e.getMessage();
+
+		Problem problem = createProblemBuilder(status, pt, detail).build();
+
+		return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
 	}
 
 	@Override
@@ -78,10 +130,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 			HttpStatus status, WebRequest request) {
 
 		if (body == null) {
-			body = Problem.builder().title(status.getReasonPhrase()).build();
+			body = Problem.builder()
+					.title(status.getReasonPhrase())
+					.build();
 
 		} else if (body instanceof String) {
-			body = Problem.builder().title((String) body).status(status.value()).build();
+			body = Problem.builder()
+					.title((String) body)
+					.status(status.value())
+					.build();
 		}
 
 		return super.handleExceptionInternal(ex, body, headers, status, request);
@@ -89,8 +146,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 	private Problem.ProblemBuilder createProblemBuilder(HttpStatus status, ProblemType problemType, String detail) {
 
-		return Problem.builder().status(status.value()).type(problemType.getUri()).title(problemType.getTitle())
+		return Problem.builder()
+				.status(status.value())
+				.type(problemType.getUri())
+				.title(problemType.getTitle())
 				.detail(detail);
+	}
+
+	private String joinPath(List<JsonMappingException.Reference> references) {
+		return references.stream()
+				.map(ref -> ref.getFieldName())
+				.collect(Collectors.joining("."));
 	}
 
 }
