@@ -11,7 +11,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
-import br.com.algaworks.algafood.model.Restaurante;
+import br.com.algaworks.algafood.domain.model.Restaurante;
 
 @Repository
 public class RestauranteRepositoryImpl {
