@@ -1,11 +1,11 @@
-package br.com.algaworks.algafood.domain.dto;
+package br.com.algaworks.algafood.api.model;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class CozinhaIdRequestDTO {
+public class CozinhaIdRequest {
 
     private Integer id;
 

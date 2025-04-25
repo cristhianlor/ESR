@@ -1,4 +1,4 @@
-package br.com.algaworks.algafood.domain.dto;
+package br.com.algaworks.algafood.api.model;
 
 import br.com.algaworks.algafood.domain.model.Cozinha;
 import lombok.Getter;
@@ -6,10 +6,10 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class RestauranteResponseDTO {
+public class RestauranteResponse {
 
     private Integer id;
     private String nome;
     private String taxaFrete;
-    private Cozinha cozinha;
+    private CozinhaIdRequest cozinha;
 }

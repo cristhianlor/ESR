@@ -16,53 +16,52 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CozinhaService {
 
-	private static final String MSG_COZINHA_EM_USO = "A cozinha de código %d não pode ser removida, pois está em uso";
+    private static final String MSG_COZINHA_EM_USO = "A cozinha de código %d não pode ser removida, pois está em uso";
 
-	private static final String MSG_COZINHA_NAO_ENCONTRADA = "Não existe código de cozinha com o código %d";
+    private static final String MSG_COZINHA_NAO_ENCONTRADA = "Não existe código de cozinha com o código %d";
 
-	@Autowired
-	public CozinhaRepository cozinhaRepository;
+    @Autowired
+    public CozinhaRepository cozinhaRepository;
 
-	@Transactional
-	public Cozinha salvar(Cozinha cozinha) {
+    @Transactional
+    public Cozinha salvar(Cozinha cozinha) {
 
-		return cozinhaRepository.save(cozinha);
-	}
+        return cozinhaRepository.save(cozinha);
+    }
 
-	@Transactional
-	public Cozinha atualizar (Integer cozinhaId) {
+    @Transactional
+    public Cozinha atualizar(Integer cozinhaId) {
 
-		return cozinhaRepository.findById(cozinhaId).orElseThrow();
-	}
+        return cozinhaRepository.findById(cozinhaId).orElseThrow();
+    }
 
-	public List<Cozinha> consultarCozinhaPorNome(String nome){
+    public List<Cozinha> consultarCozinhaPorNome(String nome) {
 
-		return cozinhaRepository.findByNome(nome);
-	}
+        return cozinhaRepository.findByNome(nome);
+    }
 
-	public List<Cozinha> listar() {
+    public List<Cozinha> listar() {
 
-		return cozinhaRepository.findAll();
-	}
+        return cozinhaRepository.findAll();
+    }
 
-	public Cozinha buscarOuFalhar(Integer cozinhaId) {
-		return cozinhaRepository.findById(cozinhaId).orElseThrow(
-				() -> new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, cozinhaId)));
-	}
+    public Cozinha buscarOuFalhar(Integer cozinhaId) {
+        return cozinhaRepository.findById(cozinhaId).orElseThrow(
+                () -> new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, cozinhaId)));
+    }
 
-	@Transactional
-	public void deletar(Integer cozinhaId) {
+    @Transactional
+    public void deletar(Integer cozinhaId) {
 
-		try {
+        try {
 
-			cozinhaRepository.deleteById(cozinhaId);
+            cozinhaRepository.deleteById(cozinhaId);
 
-		} catch (DataIntegrityViolationException e) {
-			throw new EntidadeEmUsoException(String.format(MSG_COZINHA_EM_USO, cozinhaId));
+        } catch (DataIntegrityViolationException e) {
+            throw new EntidadeEmUsoException(String.format(MSG_COZINHA_EM_USO, cozinhaId));
 
-		} catch (EmptyResultDataAccessException e) {
-			throw new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, cozinhaId));
-		}
-	}
-
+        } catch (EmptyResultDataAccessException e) {
+            throw new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, cozinhaId));
+        }
+    }
 }

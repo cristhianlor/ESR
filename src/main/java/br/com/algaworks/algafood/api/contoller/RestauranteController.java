@@ -1,12 +1,13 @@
 package br.com.algaworks.algafood.api.contoller;
 
-import java.math.BigDecimal;
-import java.util.List;
-
-import javax.validation.Valid;
-
-import br.com.algaworks.algafood.domain.dto.RestauranteRequestDTO;
-import br.com.algaworks.algafood.domain.dto.RestauranteResponseDTO;
+import br.com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
+import br.com.algaworks.algafood.api.dissembler.RestauranteInputDisassembler;
+import br.com.algaworks.algafood.api.model.RestauranteRequest;
+import br.com.algaworks.algafood.api.model.RestauranteResponse;
+import br.com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import br.com.algaworks.algafood.domain.exception.NegocioException;
+import br.com.algaworks.algafood.domain.model.Restaurante;
+import br.com.algaworks.algafood.domain.service.RestauranteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -14,41 +15,34 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import br.com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
-import br.com.algaworks.algafood.domain.exception.NegocioException;
-import br.com.algaworks.algafood.domain.model.Restaurante;
-import br.com.algaworks.algafood.domain.service.RestauranteService;
+import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.util.List;
 
 @Api(tags = "Restaurantes")
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
 
+	@Autowired
 	private RestauranteService restauranteService;
 
 	@Autowired
-	public RestauranteController(RestauranteService restauranteService) {
+	private RestauranteModelAssembler restauranteModelAssembler;
 
-		this.restauranteService = restauranteService;
-	}
+	@Autowired
+	private RestauranteInputDisassembler restauranteInputDisassembler;
 
 	@ApiOperation("Cadastra um restaurante")
 	@PostMapping
-	public ResponseEntity<RestauranteResponseDTO> salvar(@RequestBody @Valid RestauranteRequestDTO input) {
+	public ResponseEntity<Restaurante> salvar(@RequestBody @Valid Restaurante input) {
 
 		try {
-			//RestauranteRequestDTO request = restauranteService.salvar(input);
+			Restaurante request = restauranteService.salvar(input);
 
-			return null;//ResponseEntity.status(HttpStatus.CREATED).body(request);
+			return ResponseEntity.status(HttpStatus.CREATED).body(request);
 
 		} catch (EntidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
@@ -97,14 +91,15 @@ public class RestauranteController {
 	@GetMapping("/por-nome-e-frete")
 	public List<Restaurante> restaurantesPorTaxaFrete(String nome, BigDecimal taxaFreteInicial,
 			BigDecimal taxaFreteFinal){
+
 		return restauranteService.find(nome, taxaFreteInicial, taxaFreteFinal);
 	}
 
 	@ApiOperation("Lista todos os restaurantes")
 	@GetMapping
-	public List<Restaurante> listarTodos() {
+	public List<RestauranteResponse> listarTodos() {
 
-		return restauranteService.listarTodos();
+		return restauranteModelAssembler.toCollectionModel(restauranteService.listarTodos());
 	}
 
 	@ApiOperation("Exclui um restaurante por ID")

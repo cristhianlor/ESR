@@ -22,39 +22,38 @@ import br.com.algaworks.algafood.domain.service.EstadoService;
 @RequestMapping("/estado")
 public class EstadoController {
 
-	private EstadoService estadoService;
+    private EstadoService estadoService;
 
-	@Autowired
-	public EstadoController(EstadoService estadoService) {
+    public EstadoController(EstadoService estadoService) {
 
-		this.estadoService = estadoService;
-	}
+        this.estadoService = estadoService;
+    }
 
-	@PostMapping
-	public ResponseEntity<Estado> salvar(@RequestBody Estado input) {
+    @PostMapping
+    public ResponseEntity<Estado> salvar(@RequestBody Estado input) {
 
-		Estado estado = estadoService.salvar(input);
+        Estado estado = estadoService.salvar(input);
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(estado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(estado);
 
-	}
+    }
 
-	@GetMapping
-	public List<Estado> listar() {
+    @GetMapping
+    public List<Estado> listar() {
 
-		return estadoService.listarTodos();
-	}
+        return estadoService.listarTodos();
+    }
 
-	@GetMapping("{estadoId}")
-	public Estado buscarPorId(@PathVariable Integer estadoId) {
+    @GetMapping("{estadoId}")
+    public Estado buscarPorId(@PathVariable Integer estadoId) {
 
-		return estadoService.buscarOuFalhar(estadoId);
-	}
+        return estadoService.buscarOuFalhar(estadoId);
+    }
 
-	@DeleteMapping("/{estadoId}")
-	public void deletar(@PathVariable Integer estadoId) {
+    @DeleteMapping("/{estadoId}")
+    public void deletar(@PathVariable Integer estadoId) {
 
-		estadoService.excluir(estadoId);
-	}
+        estadoService.excluir(estadoId);
+    }
 
 }

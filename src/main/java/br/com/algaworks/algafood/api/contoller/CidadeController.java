@@ -18,45 +18,45 @@ import br.com.algaworks.algafood.domain.model.Cidade;
 @RequestMapping("/cidades")
 public class CidadeController {
 
-	private CidadeService cidadeService;
+    private CidadeService cidadeService;
 
-	@Autowired
-	public CidadeController(CidadeService cidadeService) {
+    //@Autowired
+    public CidadeController(CidadeService cidadeService) {
 
-		this.cidadeService = cidadeService;
-	}
+        this.cidadeService = cidadeService;
+    }
 
-	@PostMapping
-	public ResponseEntity<Cidade> salvarCidade(@RequestBody Cidade input) {
-		try {
-			Cidade cidade = cidadeService.salvar(input);
+    @PostMapping
+    public ResponseEntity<Cidade> salvarCidade(@RequestBody Cidade input) {
+        try {
+            Cidade cidade = cidadeService.salvar(input);
 
-			return ResponseEntity.status(HttpStatus.CREATED).body(cidade);
+            return ResponseEntity.status(HttpStatus.CREATED).body(cidade);
 
-		} catch (DataIntegrityViolationException e) {
-			throw new EntidadeEmUsoException(e.getMessage());
-		}
-	}
+        } catch (DataIntegrityViolationException e) {
+            throw new EntidadeEmUsoException(e.getMessage());
+        }
+    }
 
-	@GetMapping
-	public List<Cidade> listarTodasAsCidades() {
+    @GetMapping
+    public List<Cidade> listarTodasAsCidades() {
 
-		return cidadeService.listarCidades();
-	}
+        return cidadeService.listarCidades();
+    }
 
-	@GetMapping("/{cidadeId}")
-	public Cidade buscar(@PathVariable Integer cidadeId) {
+    @GetMapping("/{cidadeId}")
+    public Cidade buscar(@PathVariable Integer cidadeId) {
 
-		return cidadeService.buscarCidade(cidadeId);
-	}
+        return cidadeService.buscarCidade(cidadeId);
+    }
 
-	@DeleteMapping("/{cidadeId}")
-	public ResponseEntity<Cidade> remover(@PathVariable Integer cidadeId) {
+    @DeleteMapping("/{cidadeId}")
+    public ResponseEntity<Cidade> remover(@PathVariable Integer cidadeId) {
 
-		cidadeService.remover(cidadeId);
+        cidadeService.remover(cidadeId);
 
-		return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build();
 
-	}
+    }
 
 }

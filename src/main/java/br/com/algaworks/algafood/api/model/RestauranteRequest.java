@@ -1,4 +1,4 @@
-package br.com.algaworks.algafood.domain.dto;
+package br.com.algaworks.algafood.api.model;
 
 
 import lombok.Getter;
@@ -8,10 +8,10 @@ import java.math.BigDecimal;
 
 @Setter
 @Getter
-public class RestauranteRequestDTO {
+public class RestauranteRequest {
 
     private String nome;
     private BigDecimal taxaFrete;
-    private CozinhaIdRequestDTO cozinha;
+    private CozinhaIdRequest cozinha;
 
 }
