@@ -15,7 +15,7 @@
 	<name>ESR</name>
 	<description>Projeto do treinamento ESR</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<spring-fox.version>3.0.0</spring-fox.version>
 	</properties>
 

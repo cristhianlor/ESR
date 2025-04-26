@@ -22,7 +22,7 @@ import br.com.algaworks.algafood.domain.service.EstadoService;
 @RequestMapping("/estado")
 public class EstadoController {
 
-    private EstadoService estadoService;
+    private final EstadoService estadoService;
 
     public EstadoController(EstadoService estadoService) {
 

@@ -43,20 +43,20 @@ public class CozinhaController {
 
     @GetMapping
     public List<Cozinha> listar() {
-        log.info("Iniciando a lista de cozinhas....");
+        //log.info("Iniciando a lista de cozinhas....");
         return cozinhaService.listar();
     }
 
     @GetMapping("/por-nome")
     public List<Cozinha> consultarCozinhaPorNome(String nome) {
-        log.info("Iniciando consulta de cozinhas por nome....");
+        //log.info("Iniciando consulta de cozinhas por nome....");
 
         return cozinhaService.consultarCozinhaPorNome(nome);
     }
 
     @GetMapping("/{cozinhaId}")
     public Cozinha buscar(@PathVariable Integer cozinhaId) {
-        log.info("Iniciando busca de cozinhas por id " + cozinhaId);
+        //log.info("Iniciando busca de cozinhas por id " + cozinhaId);
 
         return cozinhaService.buscarOuFalhar(cozinhaId);
     }
@@ -64,7 +64,7 @@ public class CozinhaController {
     @PutMapping("/{cozinhaId}")
     public ResponseEntity<Cozinha> atualizar(@PathVariable Integer cozinhaId,
                                              @RequestBody Cozinha input) {
-        log.info("Iniciando atualização de cozinha com id " + cozinhaId);
+        //log.info("Iniciando atualização de cozinha com id " + cozinhaId);
 
         try {
             Cozinha cozinhaAtual = cozinhaService.buscarOuFalhar(cozinhaId);

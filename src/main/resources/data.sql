@@ -32,3 +32,8 @@ insert into tb_fm_pagto (id, desc_fm_pagto) values (2, 'Crédito');
 insert into tb_fm_pagto (id, desc_fm_pagto) values (3, 'PIX');
 
 insert into tb_rest_fm_pagto (restaurante_id, forma_pagamento_id) values (1,1), (1,2), (2,3), (3,2);
+
+insert into tb_grupo (id, nm_grupo) values (1, 'Administrador');
+insert into tb_grupo (id, nm_grupo) values (2, 'Gerente');
+insert into tb_grupo (id, nm_grupo) values (3, 'Entregador');
+insert into tb_grupo (id, nm_grupo) values (4, 'Cliente');
