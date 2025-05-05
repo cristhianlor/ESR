@@ -1,8 +1,7 @@
 package br.com.algaworks.algafood.api.contoller;
 
 import br.com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
-import br.com.algaworks.algafood.api.dissembler.RestauranteInputDisassembler;
-import br.com.algaworks.algafood.api.model.RestauranteRequest;
+import br.com.algaworks.algafood.api.disassembler.RestauranteInputDisassembler;
 import br.com.algaworks.algafood.api.model.RestauranteResponse;
 import br.com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.algaworks.algafood.domain.exception.NegocioException;

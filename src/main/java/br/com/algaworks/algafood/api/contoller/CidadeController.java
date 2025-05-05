@@ -5,7 +5,7 @@ import java.util.List;
 import br.com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import br.com.algaworks.algafood.domain.service.CidadeService;
 import io.swagger.annotations.Api;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +18,14 @@ import br.com.algaworks.algafood.domain.model.Cidade;
 @RequestMapping("/cidades")
 public class CidadeController {
 
-    private CidadeService cidadeService;
+    private final CidadeService cidadeService;
 
-    //@Autowired
     public CidadeController(CidadeService cidadeService) {
 
         this.cidadeService = cidadeService;
     }
 
+    @ApiOperation("Cadastra uma cidade")
     @PostMapping
     public ResponseEntity<Cidade> salvarCidade(@RequestBody Cidade input) {
         try {
@@ -38,18 +38,21 @@ public class CidadeController {
         }
     }
 
+    @ApiOperation("Lista todas as cidades")
     @GetMapping
     public List<Cidade> listarTodasAsCidades() {
 
         return cidadeService.listarCidades();
     }
 
+    @ApiOperation("Busca uma cidade por ID")
     @GetMapping("/{cidadeId}")
     public Cidade buscar(@PathVariable Integer cidadeId) {
 
         return cidadeService.buscarCidade(cidadeId);
     }
 
+    @ApiOperation("Exclui uma cidade")
     @DeleteMapping("/{cidadeId}")
     public ResponseEntity<Cidade> remover(@PathVariable Integer cidadeId) {
 

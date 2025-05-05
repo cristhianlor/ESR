@@ -12,6 +12,6 @@ public class RestauranteRequest {
 
     private String nome;
     private BigDecimal taxaFrete;
-    private CozinhaIdRequest cozinha;
+    private CozinhaRequest cozinha;
 
 }

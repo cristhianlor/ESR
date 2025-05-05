@@ -20,12 +20,12 @@ insert into tb_cidade (id, nm_cidade, estado_id) values (6, 'Belo Horizonte', 3)
 insert into tb_cidade (id, nm_cidade, estado_id) values (7, 'Salvador', 4);
 insert into tb_cidade (id, nm_cidade, estado_id) values (8, 'Vitória', 4);
 
-insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cidade_id, end_cep, end_logr, end_num, end_comp, end_bairro) values (1,'Romario', 10.5, 1, current_date, current_date, 1, '01001000', 'Rua 1', '100', '1º andar', 'Centro');
-insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, data_cadastro, data_atualizacao) values (2,'Ronaldinho', 12.5, 1, current_date, current_date);
-insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, data_cadastro, data_atualizacao) values (3,'Zamorano', 9.5, 2, current_date, current_date);
-insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, data_cadastro, data_atualizacao) values (4,'Salas', 8.5, 2, current_date, current_date);
-insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, data_cadastro, data_atualizacao) values (5,'Messi', 7.5, 3, current_date, current_date);
-insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, data_cadastro, data_atualizacao) values (6,'Aguirre', 6.5, 4, current_date, current_date);
+insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cidade_id, end_cep, end_logr, end_num, end_comp, end_bairro) values (1,'Romario', 10.5, 1, utc_timestamp, utc_timestamp, 1, '01001000', 'Rua 1', '100', '1º andar', 'Centro');
+insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, data_cadastro, data_atualizacao) values (2,'Ronaldinho', 12.5, 1, utc_timestamp, utc_timestamp);
+insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, data_cadastro, data_atualizacao) values (3,'Zamorano', 9.5, 2, utc_timestamp, utc_timestamp);
+insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, data_cadastro, data_atualizacao) values (4,'Salas', 8.5, 2, utc_timestamp, utc_timestamp);
+insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, data_cadastro, data_atualizacao) values (5,'Messi', 7.5, 3, utc_timestamp, utc_timestamp);
+insert into tb_restaurante (id, nm_restaurante, tx_frete, cozinha_id, data_cadastro, data_atualizacao) values (6,'Aguirre', 6.5, 4, utc_timestamp, utc_timestamp);
 
 insert into tb_fm_pagto (id, desc_fm_pagto) values (1, 'Débito');
 insert into tb_fm_pagto (id, desc_fm_pagto) values (2, 'Crédito');

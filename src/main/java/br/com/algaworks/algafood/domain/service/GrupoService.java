@@ -4,6 +4,7 @@ import br.com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException
 import br.com.algaworks.algafood.domain.model.Grupo;
 import br.com.algaworks.algafood.domain.repository.GrupoRepository;
 import org.springframework.beans.BeanUtils;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +53,15 @@ public class GrupoService {
     @Transactional
     public void excluir(@PathVariable Long grupoId) {
 
-        grupoRepository.deleteById(grupoId);
+        try {
+
+            grupoRepository.deleteById(grupoId);
+
+        } catch (EmptyResultDataAccessException e) {
+            throw new EntidadeNaoEncontradaException(String.format(GRUPO_NAO_ENCONTRADO, grupoId));
+        }
+
     }
+
 }
+

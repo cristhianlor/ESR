@@ -1,4 +1,4 @@
-package br.com.algaworks.algafood.api.dissembler;
+package br.com.algaworks.algafood.api.disassembler;
 
 import br.com.algaworks.algafood.api.model.RestauranteRequest;
 import br.com.algaworks.algafood.domain.model.Restaurante;
@@ -13,6 +13,7 @@ public class RestauranteInputDisassembler {
     private ModelMapper modelMapper;
 
     public Restaurante toDomainObject(RestauranteRequest restauranteRequest) {
+
         return modelMapper.map(restauranteRequest, Restaurante.class);
     }
 

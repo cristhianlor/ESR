@@ -1,10 +1,15 @@
 package br.com.algaworks.algafood.api.contoller;
 
+import br.com.algaworks.algafood.api.assembler.GrupoModelAssembler;
+import br.com.algaworks.algafood.api.disassembler.GrupoInputDisassembler;
+import br.com.algaworks.algafood.api.model.GrupoRequest;
+import br.com.algaworks.algafood.api.model.GrupoResponse;
 import br.com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.algaworks.algafood.domain.exception.NegocioException;
 import br.com.algaworks.algafood.domain.model.Grupo;
 import br.com.algaworks.algafood.domain.service.GrupoService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,42 +25,65 @@ public class GrupoController {
 
     private final GrupoService grupoService;
 
-    public GrupoController(GrupoService grupoService) {
+    private final GrupoModelAssembler grupoModelAssembler;
+
+    private final GrupoInputDisassembler grupoInputDisassembler;
+
+    public GrupoController(GrupoService grupoService, GrupoModelAssembler grupoModelAssembler,
+                           GrupoInputDisassembler grupoInputDisassembler) {
         this.grupoService = grupoService;
+        this.grupoModelAssembler = grupoModelAssembler;
+        this.grupoInputDisassembler = grupoInputDisassembler;
     }
 
+    @ApiOperation("Cadastra um grupo")
     @PostMapping
-    public ResponseEntity<Grupo> salvar(@RequestBody @Valid Grupo grupo) {
+    public ResponseEntity<GrupoResponse> salvar(@RequestBody @Valid GrupoRequest grupoRequest) {
 
-        Grupo newGrupo = grupoService.salvar(grupo);
+        Grupo grupo = grupoInputDisassembler.toDomainObject(grupoRequest);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        Grupo grupoSalvo = grupoService.salvar(grupo);
+
+        GrupoResponse grupoResponse = grupoModelAssembler.toModel(grupoSalvo);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(grupoResponse);
     }
 
+    @ApiOperation("Lista todos os grupos")
     @GetMapping
-    public List<Grupo> listar() {
+    public List<GrupoResponse> listar() {
 
-        return grupoService.listarTodos();
+        return grupoModelAssembler.toCollectionModel(grupoService.listarTodos());
     }
 
+    @ApiOperation("Busca um grupo por ID")
     @GetMapping("/{grupoId}")
     public Grupo buscarPorId(@PathVariable Long grupoId) {
 
         return grupoService.buscarOuFalhar(grupoId);
     }
 
+    @ApiOperation("Atualiza um grupo por ID")
     @PutMapping("/{grupoId}")
-    public ResponseEntity<Grupo> atualizar(@PathVariable Long grupoId,
-                                           @RequestBody Grupo grupo) {
+    public ResponseEntity<GrupoResponse> atualizar(@PathVariable Long grupoId,
+                                                   @RequestBody GrupoRequest grupoRequest) {
         try {
             Grupo grupoAtual = grupoService.buscarOuFalhar(grupoId);
 
+            grupoInputDisassembler.toDomainObject(grupoRequest);
+
             if (grupoAtual != null) {
-                BeanUtils.copyProperties(grupo, grupoAtual, "id");
+                BeanUtils.copyProperties(grupoRequest, grupoAtual, "id");
 
-                grupoService.salvar(grupoAtual);
+                // Salva o grupo atualizado
+                Grupo grupoSalvo = grupoService.salvar(grupoAtual);
 
-                return ResponseEntity.status(HttpStatus.OK).body(grupoAtual);
+                // Converte o modelo de domínio atualizado para o modelo de resposta
+                GrupoResponse grupoResponse = grupoModelAssembler.toModel(grupoSalvo);
+
+                //grupoModelAssembler.toModelUpdate(grupoService.salvar(grupoAtual));
+
+                return ResponseEntity.status(HttpStatus.OK).body(grupoResponse);
 
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -66,8 +94,9 @@ public class GrupoController {
 
     }
 
+    @ApiOperation("Exclui um grupo por ID")
     @DeleteMapping("/{grupoId}")
-    public ResponseEntity<Grupo> deletar(@PathVariable Long grupoId) {
+    public ResponseEntity<GrupoResponse> deletar(@PathVariable Long grupoId) {
 
         grupoService.excluir(grupoId);
 
