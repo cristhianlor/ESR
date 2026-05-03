@@ -4,9 +4,13 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import br.com.algaworks.algafood.api.assembler.CozinhaModelAssembler;
+import br.com.algaworks.algafood.api.disassembler.CozinhaInputDisassembler;
+import br.com.algaworks.algafood.api.model.CozinhaRequest;
+import br.com.algaworks.algafood.api.model.CozinhaResponse;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,45 +34,62 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/cozinhas")
 public class CozinhaController {
 
-    @Autowired
-    private CozinhaService cozinhaService;
+    private final CozinhaService cozinhaService;
+    private final CozinhaModelAssembler cozinhaModelAssembler;
+    private final CozinhaInputDisassembler cozinhaInputDisassembler;
 
+    public CozinhaController(CozinhaService cozinhaService,
+                             CozinhaModelAssembler cozinhaModelAssembler,
+                             CozinhaInputDisassembler cozinhaInputDisassembler) {
+        this.cozinhaService = cozinhaService;
+        this.cozinhaModelAssembler = cozinhaModelAssembler;
+        this.cozinhaInputDisassembler = cozinhaInputDisassembler;
+    }
+
+    @ApiOperation("Cadastra uma cozinha")
     @PostMapping
-    public ResponseEntity<Cozinha> salvar(@RequestBody @Valid Cozinha input) {
+    public ResponseEntity<CozinhaResponse> salvar(@RequestBody @Valid CozinhaRequest cozinhaRequest) {
 
-        Cozinha cozinha = cozinhaService.salvar(input);
+        Cozinha cozinha = cozinhaInputDisassembler.toDomainObject(cozinhaRequest);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(cozinha);
+        Cozinha cozinhaSalva = cozinhaService.salvar(cozinha);
+
+        CozinhaResponse cozinhaResponse = cozinhaModelAssembler.toModel(cozinhaSalva);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaResponse);
     }
 
+    @ApiOperation("Lista todas as cozinhas")
     @GetMapping
-    public List<Cozinha> listar() {
-        //log.info("Iniciando a lista de cozinhas....");
-        return cozinhaService.listar();
+    public List<CozinhaResponse> listar() {
+        log.info("Iniciando a lista de cozinhas....");
+        return cozinhaModelAssembler.toCollectionModel(cozinhaService.listar());
     }
 
+    @ApiOperation("Consulta cozinhas por nome")
     @GetMapping("/por-nome")
-    public List<Cozinha> consultarCozinhaPorNome(String nome) {
-        //log.info("Iniciando consulta de cozinhas por nome....");
+    public List<CozinhaResponse> consultarCozinhaPorNome(String nome) {
+        log.info("Iniciando consulta de cozinhas por nome....");
 
-        return cozinhaService.consultarCozinhaPorNome(nome);
+        return cozinhaModelAssembler.toCollectionModel(cozinhaService.consultarCozinhaPorNome(nome));
     }
 
+    @ApiOperation("Busca uma cozinha por ID")
     @GetMapping("/{cozinhaId}")
     public Cozinha buscar(@PathVariable Integer cozinhaId) {
-        //log.info("Iniciando busca de cozinhas por id " + cozinhaId);
+        log.info("Iniciando busca de cozinhas por id " + cozinhaId);
 
         return cozinhaService.buscarOuFalhar(cozinhaId);
     }
 
+    @ApiOperation("Atualiza uma cozinha por ID")
     @PutMapping("/{cozinhaId}")
     public ResponseEntity<Cozinha> atualizar(@PathVariable Integer cozinhaId,
                                              @RequestBody Cozinha input) {
-        //log.info("Iniciando atualização de cozinha com id " + cozinhaId);
+        log.info("Iniciando atualização de cozinha com id " + cozinhaId);
 
         try {
             Cozinha cozinhaAtual = cozinhaService.buscarOuFalhar(cozinhaId);
-
 
             if (cozinhaAtual != null) {
                 BeanUtils.copyProperties(input, cozinhaAtual, "cozinhaId");
@@ -78,7 +99,7 @@ public class CozinhaController {
                 return ResponseEntity.status(HttpStatus.OK).body(cozinhaAtual);
             }
 
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
@@ -86,6 +107,7 @@ public class CozinhaController {
 
     }
 
+    @ApiOperation("Exclui uma cozinha por ID")
     @DeleteMapping("/{cozinhaId}")
     public ResponseEntity<Cozinha> excluir(@PathVariable Integer cozinhaId) {
 

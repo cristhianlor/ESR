@@ -14,10 +14,12 @@ public class CozinhaModelAssembler {
     private final ModelMapper modelMapper;
 
     public CozinhaModelAssembler(ModelMapper modelMapper) {
+
         this.modelMapper = modelMapper;
     }
 
     public CozinhaResponse toModel(Cozinha cozinha) {
+
         return modelMapper.map(cozinha, CozinhaResponse.class);
     }
 

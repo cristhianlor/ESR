@@ -1,5 +1,6 @@
 package br.com.algaworks.algafood.api.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,5 +15,6 @@ import javax.validation.constraints.NotNull;
 public class GrupoRequest {
 
     @NotNull(message = "Nome é obrigatório e não pode ser nulo")
+    @ApiModelProperty(example = "Administrador", required = true)
     private String nome;
 }

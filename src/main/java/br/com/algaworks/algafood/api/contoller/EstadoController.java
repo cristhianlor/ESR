@@ -3,6 +3,7 @@ package br.com.algaworks.algafood.api.contoller;
 import java.util.List;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,7 @@ public class EstadoController {
         this.estadoService = estadoService;
     }
 
+    @ApiOperation("Cadastra um estado")
     @PostMapping
     public ResponseEntity<Estado> salvar(@RequestBody Estado input) {
 
@@ -38,18 +40,21 @@ public class EstadoController {
 
     }
 
+    @ApiOperation("Lista todos os estados")
     @GetMapping
     public List<Estado> listar() {
 
         return estadoService.listarTodos();
     }
 
+    @ApiOperation("Busca um estado por ID")
     @GetMapping("{estadoId}")
     public Estado buscarPorId(@PathVariable Integer estadoId) {
 
         return estadoService.buscarOuFalhar(estadoId);
     }
 
+    @ApiOperation("Exclui um estado por ID")
     @DeleteMapping("/{estadoId}")
     public void deletar(@PathVariable Integer estadoId) {
 

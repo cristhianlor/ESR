@@ -1,5 +1,6 @@
 package br.com.algaworks.algafood.api.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ public class CozinhaRequest {
 
     @NotBlank
     @NotNull
+    @ApiModelProperty(example = "Brasileira", required = true)
     private String nome;
 
 }

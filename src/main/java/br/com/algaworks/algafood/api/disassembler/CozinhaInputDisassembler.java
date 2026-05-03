@@ -11,6 +11,7 @@ public class CozinhaInputDisassembler {
     private final ModelMapper modelMapper;
 
     public CozinhaInputDisassembler(ModelMapper modelMapper) {
+
         this.modelMapper = modelMapper;
     }
 

@@ -10,6 +10,7 @@ import br.com.algaworks.algafood.domain.model.Grupo;
 import br.com.algaworks.algafood.domain.service.GrupoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,8 @@ public class GrupoController {
 
     @ApiOperation("Cadastra um grupo")
     @PostMapping
-    public ResponseEntity<GrupoResponse> salvar(@RequestBody @Valid GrupoRequest grupoRequest) {
+    public ResponseEntity<GrupoResponse> salvar(@ApiParam(name = "body", value = "Representação de um novo grupo")
+                                                @RequestBody @Valid GrupoRequest grupoRequest) {
 
         Grupo grupo = grupoInputDisassembler.toDomainObject(grupoRequest);
 
@@ -58,14 +60,18 @@ public class GrupoController {
 
     @ApiOperation("Busca um grupo por ID")
     @GetMapping("/{grupoId}")
-    public Grupo buscarPorId(@PathVariable Long grupoId) {
+    public Grupo buscarPorId(@ApiParam(value = "ID de um grupo", example = "1")
+                             @PathVariable Long grupoId) {
 
         return grupoService.buscarOuFalhar(grupoId);
     }
 
     @ApiOperation("Atualiza um grupo por ID")
     @PutMapping("/{grupoId}")
-    public ResponseEntity<GrupoResponse> atualizar(@PathVariable Long grupoId,
+    public ResponseEntity<GrupoResponse> atualizar(@ApiParam(value = "ID de um grupo", example = "1")
+                                                   @PathVariable Long grupoId,
+                                                   @ApiParam(name = "body", value = "Representação de um grupo com os " +
+                                                           "dados atualizados")
                                                    @RequestBody GrupoRequest grupoRequest) {
         try {
             Grupo grupoAtual = grupoService.buscarOuFalhar(grupoId);
@@ -81,8 +87,6 @@ public class GrupoController {
                 // Converte o modelo de domínio atualizado para o modelo de resposta
                 GrupoResponse grupoResponse = grupoModelAssembler.toModel(grupoSalvo);
 
-                //grupoModelAssembler.toModelUpdate(grupoService.salvar(grupoAtual));
-
                 return ResponseEntity.status(HttpStatus.OK).body(grupoResponse);
 
             }
@@ -96,7 +100,8 @@ public class GrupoController {
 
     @ApiOperation("Exclui um grupo por ID")
     @DeleteMapping("/{grupoId}")
-    public ResponseEntity<GrupoResponse> deletar(@PathVariable Long grupoId) {
+    public ResponseEntity<GrupoResponse> deletar(@ApiParam(value = "ID de um grupo", example = "1")
+                                                 @PathVariable Long grupoId) {
 
         grupoService.excluir(grupoId);
 

@@ -9,10 +9,12 @@ public class CidadeInputDisassembler {
     private final ModelMapper modelMapper;
 
     public CidadeInputDisassembler(ModelMapper modelMapper) {
+
         this.modelMapper = modelMapper;
     }
 
     public Cidade toDomainObject(CidadeRequest cidadeRequest) {
+
         return modelMapper.map(cidadeRequest, Cidade.class);
     }
 

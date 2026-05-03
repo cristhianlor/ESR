@@ -37,14 +37,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return super.handleTypeMismatch(e, headers, status, request);
     }
 
-
+    @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException e,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
 
         ProblemType pt = ProblemType.DADOS_INVALIDOS;
 
-        String detail = String.format("Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente."
-        );
+        String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";        
 
         BindingResult bindingResult = e.getBindingResult();
 
@@ -135,7 +134,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
-    public ResponseEntity<?> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e,
+    public ResponseEntity<Object> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e,
                                                                   WebRequest request) {
 
         HttpStatus status = HttpStatus.NOT_FOUND;

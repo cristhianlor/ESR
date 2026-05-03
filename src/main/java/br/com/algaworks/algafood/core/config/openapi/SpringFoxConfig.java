@@ -20,7 +20,12 @@ public class SpringFoxConfig {
                     .apis(RequestHandlerSelectors.basePackage("br.com.algaworks.algafood"))
                     .build()
                 .apiInfo(apiInfo())
-                .tags(new Tag("Cidades", "Gerencia as cidades"), new Tag("Restaurantes", "Gerencia os restaurantes"));
+                .tags(new Tag("Cidades", "Gerencia as cidades"),
+                        new Tag("Restaurantes", "Gerencia os restaurantes")
+                , new Tag("Cozinhas", "Gerencia as cozinhas")
+                , new Tag("Formas de Pagamento", "Gerencia as formas de pagamento")
+                , new Tag("Grupos", "Gerencia os grupos")
+                , new Tag("Estados", "Gerencia os estados"));
     }
 
     public ApiInfo apiInfo(){

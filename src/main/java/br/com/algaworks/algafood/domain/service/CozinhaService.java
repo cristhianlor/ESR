@@ -2,7 +2,6 @@ package br.com.algaworks.algafood.domain.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -20,8 +19,12 @@ public class CozinhaService {
 
     private static final String MSG_COZINHA_NAO_ENCONTRADA = "Não existe código de cozinha com o código %d";
 
-    @Autowired
-    public CozinhaRepository cozinhaRepository;
+
+    public final CozinhaRepository cozinhaRepository;
+
+    public CozinhaService(CozinhaRepository cozinhaRepository) {
+        this.cozinhaRepository = cozinhaRepository;
+    }
 
     @Transactional
     public Cozinha salvar(Cozinha cozinha) {
