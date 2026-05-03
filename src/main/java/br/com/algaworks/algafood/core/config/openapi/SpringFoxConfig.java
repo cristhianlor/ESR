@@ -1,0 +1,40 @@
+package br.com.algaworks.algafood.core.config.openapi;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.service.Tag;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+
+@Configuration
+public class SpringFoxConfig {
+
+    @Bean
+    public Docket apiDocket(){
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                    .apis(RequestHandlerSelectors.basePackage("br.com.algaworks.algafood"))
+                    .build()
+                .apiInfo(apiInfo())
+                .tags(new Tag("Cidades", "Gerencia as cidades"),
+                        new Tag("Restaurantes", "Gerencia os restaurantes")
+                , new Tag("Cozinhas", "Gerencia as cozinhas")
+                , new Tag("Formas de Pagamento", "Gerencia as formas de pagamento")
+                , new Tag("Grupos", "Gerencia os grupos")
+                , new Tag("Estados", "Gerencia os estados"));
+    }
+
+    public ApiInfo apiInfo(){
+        return new ApiInfoBuilder()
+                .title("AlgaFood API")
+                .description("API aberta para clientes e restaurantes")
+                .version("1")
+                .contact(new Contact("Algaworks", "https://www.algaworks.com", "contato@algaworks.com.br"))
+                .build();
+    }
+
+}
