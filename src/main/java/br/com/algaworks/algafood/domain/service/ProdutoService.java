@@ -43,6 +43,10 @@ public class ProdutoService {
         return produtoRepository.save(produtoAtual);
     }
 
+    public List<Produto> listarTodos() {
+        return produtoRepository.findAll();
+    }
+
     public Produto buscarOuFalhar(Integer restauranteId, Integer produtoId) {
         return produtoRepository.findByIdAndRestauranteId(produtoId, restauranteId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(

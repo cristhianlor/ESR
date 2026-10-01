@@ -2,6 +2,9 @@ insert into tb_cozinha (id, cozinha) values (1, 'Brasileira');
 insert into tb_cozinha (id, cozinha) values (2, 'Chilena');
 insert into tb_cozinha (id, cozinha) values (3,'Argentina');
 insert into tb_cozinha (id, cozinha) values (4, 'Uruguaia');
+insert into tb_cozinha (id, cozinha) values (5, 'Italiana');
+insert into tb_cozinha (id, cozinha) values (6, 'Japonesa');
+insert into tb_cozinha (id, cozinha) values (7, 'Chinesa');
 
 insert into tb_estado (id, nm_estado) values (1, 'São Paulo');
 insert into tb_estado (id, nm_estado) values (2, 'Rio de Janeiro');
@@ -37,3 +40,11 @@ insert into tb_grupo (id, nm_grupo) values (1, 'Administrador');
 insert into tb_grupo (id, nm_grupo) values (2, 'Gerente');
 insert into tb_grupo (id, nm_grupo) values (3, 'Entregador');
 insert into tb_grupo (id, nm_grupo) values (4, 'Cliente');
+
+insert into tb_produto (id, nm_prod, desc_prod, vlr_prod, prod_ativo, restaurante_id) values
+(1, 'Feijoada', 'Feijoada completa com arroz, farofa e couve', 35.0, true, 1),
+(2, 'Churrasco', 'Churrasco completo com picanha, linguiça e frango', 50.0, true, 2),
+(3, 'Empanadas', 'Empanadas argentinas recheadas com carne e queijo', 25.0, true, 3),
+(4, 'Assado', 'Assado uruguaio com costela e linguiça', 60.0, true, 3);
+
+

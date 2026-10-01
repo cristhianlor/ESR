@@ -11,7 +11,6 @@ import br.com.algaworks.algafood.domain.service.ProdutoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,14 +23,18 @@ import java.util.List;
 @RequestMapping("/restaurantes/{restauranteId}/produtos")
 public class ProdutoController {
 
-    @Autowired
-    private ProdutoService produtoService;
 
-    @Autowired
-    private ProdutoModelAssembler produtoModelAssembler;
+    private final ProdutoService produtoService;
 
-    @Autowired
-    private ProdutoInputDisassembler produtoInputDisassembler;
+    private final ProdutoModelAssembler produtoModelAssembler;
+
+    private final ProdutoInputDisassembler produtoInputDisassembler;
+
+    public ProdutoController(ProdutoService produtoService, ProdutoModelAssembler produtoModelAssembler, ProdutoInputDisassembler produtoInputDisassembler) {
+        this.produtoService = produtoService;
+        this.produtoModelAssembler = produtoModelAssembler;
+        this.produtoInputDisassembler = produtoInputDisassembler;
+    }
 
     @ApiOperation("Cadastra um produto para um restaurante")
     @PostMapping
@@ -87,6 +90,15 @@ public class ProdutoController {
         ProdutoResponse produtoResponse = produtoModelAssembler.toModel(produto);
 
         return ResponseEntity.ok(produtoResponse);
+    }
+
+    @ApiOperation("Lista todos os produtos")
+    @GetMapping("/produtos")
+    public ResponseEntity<List<ProdutoResponse>> listarTodosProdutos(){
+        List<Produto> produtos = produtoService.listarTodos();
+        List<ProdutoResponse> produtosResponse = produtoModelAssembler.toCollectionModel(produtos);
+
+        return ResponseEntity.ok(produtosResponse);
     }
 
     @ApiOperation("Lista todos os produtos de um restaurante")
